@@ -127,7 +127,7 @@ define('forum/account/edit', ['forum/account/header', 'uploader'], function(head
 	}
 
 	function handleAccountDelete() {
-		$('#deleteAccountBtn').on('click', function() {
+		/*$('#deleteAccountBtn').on('click', function() {
 			translator.translate('[[user:delete_account_confirm]]', function(translated) {
 				bootbox.confirm(translated, function(confirm) {
 					if (!confirm) {
@@ -141,7 +141,7 @@ define('forum/account/edit', ['forum/account/header', 'uploader'], function(head
 				});
 			});
 			return false;
-		});
+		});*/
 	}
 
 	function handleImageUpload() {

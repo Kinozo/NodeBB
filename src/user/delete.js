@@ -12,6 +12,8 @@ var async = require('async'),
 module.exports = function(User) {
 
 	User.delete = function(uid, callback) {
+		console.log("Deleting user id: " + uid);
+
 		async.waterfall([
 			function(next) {
 				deletePosts(uid, next);
@@ -57,7 +59,10 @@ module.exports = function(User) {
 					db.deleteObjectField('userslug:uid', userData.userslug, next);
 				},
 				function(next) {
-					db.deleteObjectField('email:uid', userData.email.toLowerCase(), next);
+					if (userData.email != null)
+					{
+						db.deleteObjectField('email:uid', userData.email.toLowerCase(), next);
+					}
 				},
 				function(next) {
 					db.delete('uid:' + uid + ':notifications:read', next);
