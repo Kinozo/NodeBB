@@ -73,6 +73,15 @@ Controllers.home = function(req, res, next) {
 					next(err, categoryData);
 				});
 			});
+		},
+		usersettings: function (next)
+		{
+			var uid = req.user ? req.user.uid : 0;
+			
+			user.getSettings(uid, function(err, settings)
+			{
+				next(err, settings);
+			});
 		}
 	}, function (err, data) {
 		if (err) {
