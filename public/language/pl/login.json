@@ -1,9 +1,0 @@
-{
-    "username": "Nazwa użytkownika lub adres e-mail",
-    "remember_me": "Zapamiętaj mnie",
-    "forgot_password": "Zapomniałeś hasło?",
-    "alternative_logins": "Alternatywne logowanie",
-    "failed_login_attempt": "Nie udało się zalogować. Spróbuj ponownie.",
-    "login_successful": "Zostałeś pomyślnie zalogowany.",
-    "dont_have_account": "Nie masz konta?"
-}
