@@ -80,6 +80,7 @@ Controllers.home = function(req, res, next) {
 			
 			user.getSettings(uid, function(err, settings)
 			{
+				settings.themeMod = settings.themeMod == "Classic" ? true : false;
 				next(err, settings);
 			});
 		}

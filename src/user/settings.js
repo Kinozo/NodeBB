@@ -26,6 +26,7 @@ module.exports = function(User) {
 
 				//Added by AliceHeather64@gmail.com
 				settings.themeHomeShowPosts = settings.themeHomeShowPosts ? parseInt(settings.themeHomeShowPosts, 10) !== 0 : false;
+				settings.themeMod = settings.themeMod || 'Lavender';
 
 				settings.showemail = settings.showemail ? parseInt(settings.showemail, 10) !== 0 : false;
 				settings.openOutgoingLinksInNewTab = settings.openOutgoingLinksInNewTab ? parseInt(settings.openOutgoingLinksInNewTab, 10) !== 0 : false;
@@ -79,6 +80,7 @@ module.exports = function(User) {
 		plugins.fireHook('action:user.saveSettings', {uid: uid, settings: data});
 		db.setObject('user:' + uid + ':settings', {
 			themeHomeShowPosts: data.themeHomeShowPosts, //Added by AliceHeather64@gmail.com
+			themeMod: data.themeMod, //Added by AliceHeather64@gmail.com
 			showemail: data.showemail,
 			openOutgoingLinksInNewTab: data.openOutgoingLinksInNewTab,
 			dailyDigestFreq: data.dailyDigestFreq || 'off',
