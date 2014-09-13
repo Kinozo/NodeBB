@@ -72,8 +72,18 @@ topicsController.get = function(req, res, next) {
 					postIndex = Math.max((req.params.post_index || 1) - (settings.postsPerPage + 1), 0);
 				}
 			} else if (!req.query.page) {
+				/*AliceHeather64@gmail.com - Invalid values
 				var index = Math.max(parseInt(req.params.post_index, 10), 0);
-				page = Math.ceil((index + 1) / settings.postsPerPage);
+				page = Math.ceil((index + 1) / settings.postsPerPage);*/
+
+				if (reverse) {
+					if (!req.params.post_index || parseInt(req.params.post_index, 10) === 1) {
+						req.params.post_index = 0;
+					}
+					postIndex = Math.max(postCount - (req.params.post_index || postCount) - (settings.postsPerPage - 1), 0);
+				} else {
+					postIndex = Math.max((req.params.post_index || 1) - (settings.postsPerPage + 1), 0);
+				}
 			}
 
 			var start = (page - 1) * settings.postsPerPage + postIndex,
