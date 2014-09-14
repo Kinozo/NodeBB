@@ -136,7 +136,7 @@ var
 	User.updateLastOnlineTime = function(uid, callback) {
 		callback = callback || function() {};
 		User.getUserField(uid, 'status', function(err, status) {
-			if(err || status === 'offline') {
+			if(err) {
 				return callback(err);
 			}
 
