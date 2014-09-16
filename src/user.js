@@ -115,13 +115,19 @@ var
 				user.userslug = '';
 			}
 
-			if (user.picture) {
-				if (user.picture === user.uploadedpicture) {
+			if (user.picture)
+			{
+				if (user.picture === user.uploadedpicture)
+				{
 					user.picture = user.picture.indexOf('http') === -1 ? nconf.get('relative_path') + user.picture : user.picture;
-				} else {
+				}
+				else
+				{
 					user.picture = User.createGravatarURLFromEmail(user.email);
 				}
-			} else {
+			}
+			else
+			{
 				user.picture = User.createGravatarURLFromEmail('');
 			}
 
@@ -270,7 +276,8 @@ var
 		});
 	};
 
-	User.createGravatarURLFromEmail = function(email) {
+	User.createGravatarURLFromEmail = function(email) 
+	{
 		var customGravatarDefaultImage = meta.config.customGravatarDefaultImage;
 		if (customGravatarDefaultImage && customGravatarDefaultImage.indexOf('http') === -1) {
 			customGravatarDefaultImage = nconf.get('url') + meta.config.customGravatarDefaultImage;
@@ -282,7 +289,10 @@ var
 			rating: 'pg'
 		};
 
-		if (!email) {
+		var useGravatar = meta.config.useGravatar || 0;
+
+		if (!email || useGravatar != 1)
+		{
 			email = '';
 		}
 
