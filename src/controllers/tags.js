@@ -47,6 +47,18 @@ tagsController.getTag = function(req, res, next) {
 };
 
 tagsController.getTags = function(req, res, next) {
+	var uid = req.user ? req.user.uid : 0;
+
+	/* Modification for TS FORUM */
+
+	if (uid == 0)
+	{
+		res.redirect(nconf.get('relative_path') + '/403');
+		return;
+	}
+
+	/* End of Modification for TS FORUM */
+
 	topics.getTags(0, 99, function(err, tags) {
 		if (err) {
 			return next(err);
