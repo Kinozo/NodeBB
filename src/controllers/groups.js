@@ -18,7 +18,12 @@ groupsController.list = function(req, res) {
 
 groupsController.details = function(req, res) {
 	var uid = req.user ? parseInt(req.user.uid, 10) : 0;
+
 	async.parallel({
+		isMemberOfGroup: function (next)
+		{
+			groups.isMember(uid, req.params.name, next);
+		},
 		group: function(next) {
 			groups.get(req.params.name, {
 				expand: true
@@ -28,9 +33,19 @@ groupsController.details = function(req, res) {
 			groups.getLatestMemberPosts(req.params.name, 10, uid, next);
 		}
 	}, function(err, results) {
-		if (!err) {
-			res.render('groups/details', results);
-		} else {
+		if (!err)
+		{
+			if (!results.isMemberOfGroup)
+			{
+				res.redirect(nconf.get('relative_path') + '/403');
+			}
+			else
+			{
+				res.render('groups/details', results);
+			}	
+		}
+		else
+		{
 			res.redirect(nconf.get('relative_path') + '/404');
 		}
 	});
