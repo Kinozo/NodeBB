@@ -35,7 +35,7 @@ groupsController.details = function(req, res) {
 	}, function(err, results) {
 		if (!err)
 		{
-			if (!results.isMemberOfGroup)
+			if (!results.isMemberOfGroup || req.params.name == "administrators" || req.params.name == "registered-users")
 			{
 				res.redirect(nconf.get('relative_path') + '/403');
 			}
