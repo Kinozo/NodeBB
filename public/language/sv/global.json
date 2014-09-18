@@ -73,5 +73,10 @@
 	"guest": "Anonym",
 	"guests": "Anonyma",
 	"updated.title": "Forum uppdaterades",
+<<<<<<< HEAD
 	"updated.message": "Det här forumet har nu uppdaterats till senaste versionen. Klicka här för att åter hämta sidan."
+=======
+	"updated.message": "Det här forumet har nu uppdaterats till senaste versionen. Klicka här för att åter hämta sidan.",
+	"image_uplad_agreement": "Din bild kommer att laddas upp anonymt till imgur.com och sedan länkas till forumet.<br><br>Om du fortsätter så accepterar du att din bild laddas upp anonymt till imgur.com"
+>>>>>>> Security
 }

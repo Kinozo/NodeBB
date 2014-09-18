@@ -73,5 +73,10 @@
 	"guest": "Guest",
 	"guests": "Guests",
 	"updated.title": "Forum Updated",
+<<<<<<< HEAD
 	"updated.message": "This forum has just been updated to the latest version. Click here to refresh the page."
+=======
+	"updated.message": "This forum has just been updated to the latest version. Click here to refresh the page.",
+	"image_uplad_agreement": "Your image will be uploaded to imgur.com anonymously and then linked to this forum for view.<br><br>By continueing you accept these agreements."
+>>>>>>> Security
 }
