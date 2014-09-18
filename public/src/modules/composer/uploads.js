@@ -214,71 +214,85 @@ define('composer/uploads', ['composer/preview'], function(preview) {
 			uploadForm = postContainer.find('#fileForm');
 
 		uploadForm.attr('action', params.route);
+		
+		translator.translate('[[global:image_uplad_agreement]]', function(translated)
+		{
+			bootbox.confirm(translated, function(confirm)
+			{
+				if (confirm)
+				{
+					for(var i = 0; i < files.length; ++i) {
+						var isImage = files[i].type.match(/image./);
 
-		for(var i = 0; i < files.length; ++i) {
-			var isImage = files[i].type.match(/image./);
+						text = insertText(text, textarea.getCursorPosition(), (isImage ? '!' : '') + '[' + files[i].name + '](uploading...) ');
 
-			text = insertText(text, textarea.getCursorPosition(), (isImage ? '!' : '') + '[' + files[i].name + '](uploading...) ');
-
-			if(files[i].size > parseInt(config.maximumFileSize, 10) * 1024) {
-				uploadForm[0].reset();
-				return app.alertError('[[error:file-too-big, ' + config.maximumFileSize + ']]');
-			}
-		}
-
-		textarea.val(text);
-
-		uploadForm.off('submit').submit(function() {
-			function updateTextArea(filename, text) {
-				var current = textarea.val();
-				var re = new RegExp(escapeRegExp(filename) + "]\\([^)]+\\)", 'g');
-				textarea.val(current.replace(re, filename + '](' + text + ')'));
-			}
-
-			$(this).find('#postUploadCsrf').val($('#csrf_token').val());
-
-			if (formData) {
-				formData.append('_csrf', $('#csrf_token').val());
-			}
-
-			uploads.inProgress[post_uuid] = uploads.inProgress[post_uuid] || [];
-			uploads.inProgress[post_uuid].push(1);
-
-			$(this).ajaxSubmit({
-				resetForm: true,
-				clearForm: true,
-				formData: formData,
-
-				error: onUploadError,
-
-				uploadProgress: function(event, position, total, percent) {
-					for(var i=0; i < files.length; ++i) {
-						updateTextArea(files[i].name, 'uploading ' + percent + '%');
-					}
-				},
-
-				success: function(uploads) {
-					uploads = maybeParse(uploads);
-
-					if(uploads && uploads.length) {
-						for(var i=0; i<uploads.length; ++i) {
-							updateTextArea(uploads[i].name, uploads[i].url);
+						if(files[i].size > parseInt(config.maximumFileSize, 10) * 1024) {
+							uploadForm[0].reset();
+							return app.alertError('[[error:file-too-big, ' + config.maximumFileSize + ']]');
 						}
 					}
-					preview.render(postContainer);
-					textarea.focus();
-				},
 
-				complete: function() {
-					uploadForm[0].reset();
-					uploads.inProgress[post_uuid].pop();
+					textarea.val(text);
+
+					uploadForm.off('submit').submit(function() {
+						function updateTextArea(filename, text) {
+							var current = textarea.val();
+							var re = new RegExp(escapeRegExp(filename) + "]\\([^)]+\\)", 'g');
+							textarea.val(current.replace(re, filename + '](' + text + ')'));
+						}
+
+						$(this).find('#postUploadCsrf').val($('#csrf_token').val());
+
+						if (formData) {
+							formData.append('_csrf', $('#csrf_token').val());
+						}
+
+						uploads.inProgress[post_uuid] = uploads.inProgress[post_uuid] || [];
+						uploads.inProgress[post_uuid].push(1);
+
+						$(this).ajaxSubmit({
+							resetForm: true,
+							clearForm: true,
+							formData: formData,
+
+							error: onUploadError,
+
+							uploadProgress: function(event, position, total, percent) {
+								for(var i=0; i < files.length; ++i) {
+									updateTextArea(files[i].name, 'uploading ' + percent + '%');
+								}
+							},
+
+							success: function(uploads) {
+								uploads = maybeParse(uploads);
+
+								if(uploads && uploads.length) {
+									for(var i=0; i<uploads.length; ++i) {
+										updateTextArea(uploads[i].name, uploads[i].url);
+									}
+								}
+								preview.render(postContainer);
+								textarea.focus();
+							},
+
+							complete: function() {
+								uploadForm[0].reset();
+								uploads.inProgress[post_uuid].pop();
+							}
+						});
+
+						return false;
+					});
+
+					uploadForm.submit();
+				}
+				else
+				{
+					return app.alertError('Agreement Denied.');
 				}
 			});
-
-			return false;
 		});
 
-		uploadForm.submit();
 	}
 
 	function uploadTopicThumb(params) {
