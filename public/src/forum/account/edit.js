@@ -26,6 +26,7 @@ define('forum/account/edit', ['forum/account/header', 'uploader'], function(head
 		currentEmail = $('#inputEmail').val();
 
 		handleImageChange();
+		handleSoftDelete();
 		handleAccountDelete();
 		handleImageUpload();
 		handleEmailConfirm();
@@ -123,6 +124,72 @@ define('forum/account/edit', ['forum/account/header', 'uploader'], function(head
 					$('#user-header-picture').attr('src', uploadedPicture);
 				}
 			}
+		});
+	}
+
+	function handleSoftDelete()
+	{
+		$('#softDeleteBtn').on('click', function()
+		{
+			$('#soft-delete-modal').modal('show');
+			$('#soft-delete-modal').removeClass('hide');
+
+			return false;
+		});
+
+		$('#softDeleteReason').removeClass('alert-success').addClass('alert-danger');
+
+		$('#softDeleteReason').on("keyup", function()
+		{
+			if ($('#softDeleteReason').val().length < 5 || $('#softDeleteReason').val().length > 128)
+			{
+				$('#softDeleteReason').removeClass('alert-success').addClass('alert-danger');
+				return false;
+			}
+
+			$('#softDeleteReason').removeClass('alert-danger').addClass('alert-success');
+			
+			return false;
+		});
+
+		$('#softDeleteConfirmBtn').on("click", function()
+		{
+			if ($('#softDeleteReason').val().length >= 5 && $('#softDeleteReason').val().length <= 128)
+			{
+				$('#soft-delete-modal').modal('hide');
+				$('#soft-delete-modal').addClass('hide');
+
+				$('#soft-delete-modal-confirm').modal('show');
+				$('#soft-delete-modal-confirm').removeClass('hide');
+			}
+
+			return false;
+		});
+
+		$('#softDeleteConfirmConfirmBtn').on("click", function()
+		{
+			sendSoftDeleteRequest($('#softDeleteReason').val());
+
+			$('#soft-delete-modal-confirm').modal('hide');
+			$('#soft-delete-modal-confirm').addClass('hide');
+		});
+	}
+
+	function sendSoftDeleteRequest(message)
+	{
+		socket.emit('user.sendSoftDeletePost',
+		{
+			uid: ajaxify.variables.get('theirid'),
+			msg: message
+		},
+		function(err)
+		{
+			if(err)
+			{
+				app.alertError(err.message);
+			}
+
+			app.alertSuccess('[[user:soft_delete_account_success]]');
 		});
 	}
 
@@ -238,7 +305,7 @@ define('forum/account/edit', ['forum/account/header', 'uploader'], function(head
 	}
 
 	function changeUserPicture(type) {
-		socket.emit('user.changePicture', {
+		socket.emit('user.sendSoftDeletePost', {
 			type: type,
 			uid: ajaxify.variables.get('theirid')
 		}, function(err) {

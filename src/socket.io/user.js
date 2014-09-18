@@ -121,6 +121,11 @@ SocketUser.updateProfile = function(socket, data, callback) {
 	});
 };
 
+SocketUser.sendSoftDeletePost = function(socket, data, callback)
+{
+	user.sendSoftDeletePost(data, callback);
+}
+
 SocketUser.changePicture = function(socket, data, callback) {
 	if(!data) {
 		return callback(new Error('[[error:invalid-data]]'));

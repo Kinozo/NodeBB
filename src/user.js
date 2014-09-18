@@ -315,6 +315,27 @@ var
 		User.setUserField(postData.uid, 'lastposttime', postData.timestamp);
 	};
 
+	User.sendSoftDeletePost = function(data, callback)
+	{
+		var timestamp = Date.now()
+
+		var softDeleteRequestData = {
+			'uid': data.uid,
+			'requestReason': data.msg,
+			'timestamp': timestamp
+		};
+
+		db.setObject('nodebb-plugin-alice:soft-delete:' + data.uid, softDeleteRequestData, function(err)
+		{
+			if (err)
+			{
+				return callback(err);
+			}
+
+			callback(null);
+		});
+	}
+
 	emitter.on('event:newpost', User.onNewPostMade);
 
 	User.incrementUserPostCountBy = function(uid, value, callback) {
